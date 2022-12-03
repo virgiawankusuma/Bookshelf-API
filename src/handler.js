@@ -3,7 +3,9 @@ const { nanoid } = require('nanoid');
  
 
 const addBookHandler = (request, h) => {
-  const { name, year, author, summary, publisher, pageCount, readPage, reading } = request.payload;
+  const { 
+    name, year, author, summary, publisher, pageCount, readPage, reading 
+  } = request.payload;
 
   if (name === undefined) {
     const response = h.response({
@@ -26,10 +28,12 @@ const addBookHandler = (request, h) => {
   }
 
   const id = nanoid(16);
-  const finished = (pageCount === readPage);
   const insertedAt = new Date().toISOString();
   const updatedAt = insertedAt;
-  const newBook = { id, name, year, author, summary, publisher, pageCount, readPage, finished, reading, insertedAt, updatedAt };
+  const finished = (pageCount === readPage);
+  const newBook = { 
+    id, name, year, author, summary, publisher, pageCount, readPage, finished, reading, insertedAt, updatedAt 
+  };
 
   books.push(newBook);
 
@@ -63,15 +67,21 @@ const getAllBooksHandler = (request, h) => {
   var filteredBooks = books;
 
   if (name !== undefined) {
-    filteredBooks = filteredBooks.filter((book) => book.name.toLowerCase().includes(name.toLowerCase()));
+    filteredBooks = filteredBooks.filter(
+      (book) => book.name.toLowerCase().includes(name.toLowerCase())
+    );
   }
 
   if (finished !== undefined) {
-    filteredBooks = filteredBooks.filter((book) => book.finished === !!Number(finished));
+    filteredBooks = filteredBooks.filter(
+      (book) => book.finished === !!Number(finished)
+    );
   }
 
   if (reading !== undefined) {
-    filteredBooks = filteredBooks.filter((book) => book.reading === !!Number(reading));
+    filteredBooks = filteredBooks.filter(
+      (book) => book.reading === !!Number(reading)
+    );
   }
 
   const response = h.response({
@@ -113,9 +123,11 @@ const getBookByIdHandler = (request, h) => {
 
 const editBookByIdHandler = (request, h) => {
   const { id } = request.params;
-  const { name, year, author, summary, publisher, pageCount, readPage, reading } = request.payload;
   const updatedAt = new Date().toISOString();
   const index = books.findIndex((book) => book.id === id);
+  const { 
+    name, year, author, summary, publisher, pageCount, readPage, reading 
+  } = request.payload;
 
   if (index !== -1) {
     if (name === undefined) {
@@ -140,7 +152,9 @@ const editBookByIdHandler = (request, h) => {
 
     const finished = (pageCount === readPage);
 
-    books[index] = {...books[index], name, year, author, summary, publisher, pageCount, readPage, finished, reading, updatedAt };
+    books[index] = {
+      ...books[index], name, year, author, summary, publisher, pageCount, readPage, finished, reading, updatedAt
+    };
 
     const response = h.response({
       "status": "success",
